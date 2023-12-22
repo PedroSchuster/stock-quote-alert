@@ -1,0 +1,8 @@
+{
+  "host": "smtp-mail.outlook.com",
+  "port": 25,
+  "username": "pedrotestdev@outlook.com",
+  "password": "stocktest123",
+  "ssl": true,
+  "recipient": "pedro.ssc42@gmail.com"
+}
