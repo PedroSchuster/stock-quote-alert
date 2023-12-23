@@ -14,7 +14,6 @@ namespace StockQuoteAlert
         {
             StockArgs stockArgs = GetParams();
             await CreateHostBuilder(stockArgs).RunConsoleAsync();
-            
         }
 
         private static StockArgs GetParams()

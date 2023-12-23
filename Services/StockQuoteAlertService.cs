@@ -66,8 +66,7 @@ namespace stock_quote_alert.Services
             }
             catch (Exception ex)
             {
-                ChangeApiKey();
-                Console.WriteLine(ex.ToString() + " \n Chave de api trocada");
+                Console.WriteLine(ex.ToString());
             }
 
         }
@@ -92,8 +91,25 @@ namespace stock_quote_alert.Services
                 var response = await client.SendAsync(request);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 var jsonObject = JObject.Parse(responseContent);
+                
+                // caso o numero de requisições chegar no limite, a response vai retornar com uma mensagem, dai eu troco a chave da api
+                if (jsonObject["message"] != null)
+                {
+                    ChangeApiKey();
+                    Console.WriteLine("Chave de api trocada");
+                    return await StockQuoteAPI();
+                }
+
+                // caso o nome do ativo não existir ou for invalido para essa api, o campo "data" vai ser vazio, portanto precisamos reiniciar o programa
+                // com outro ativo
+                if (jsonObject["data"].Count() == 0)
+                {
+                    Console.WriteLine("Nome de ativo inválido, por favor reinicie o programa!");
+                    Environment.Exit(0);
+                }
+
                 var price = (string)jsonObject["data"]["price"];
-                // Converta para o tipo desejado (pode ser necessário ajustar dependendo do tipo real do valor)
+                
                 return Convert.ToDecimal(price, CultureInfo.InvariantCulture);
             }
             catch (Exception ex)
@@ -127,6 +143,7 @@ namespace stock_quote_alert.Services
         private void ChangeApiKey()
         {
             keys.RemoveAt(0);
+            if (keys.Count == 0) Environment.Exit(0);
             apiToken = keys[0];
         }
     }

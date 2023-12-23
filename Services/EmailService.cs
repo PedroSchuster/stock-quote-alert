@@ -23,13 +23,19 @@ namespace stock_quote_alert
         
         public void ReadConfig()
         {
-            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\Config\\SMTPConfig.json";
-
-
-            using (StreamReader sr = new StreamReader(path))
+            try
             {
-                string json = sr.ReadToEnd();
-                config = JsonConvert.DeserializeObject<SMTPConfig>(json);
+                string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\Config\\SMTPConfig.json";
+
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    string json = sr.ReadToEnd();
+                    config = JsonConvert.DeserializeObject<SMTPConfig>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
