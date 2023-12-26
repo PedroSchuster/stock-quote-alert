@@ -122,7 +122,8 @@ namespace stock_quote_alert.Services
         {
             try
             {
-                string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\Config\\APIKeys.txt";
+                string executableDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                string path = executableDirectory + "\\Config\\APIKeys.txt";
                 using (StreamReader sr = new StreamReader(path))
                 {
                     string line;

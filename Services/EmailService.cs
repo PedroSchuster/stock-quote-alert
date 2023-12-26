@@ -25,7 +25,8 @@ namespace stock_quote_alert
         {
             try
             {
-                string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\Config\\SMTPConfig.json";
+                string executableDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                string path = executableDirectory + "\\Config\\SMTPConfig.json";
 
                 using (StreamReader sr = new StreamReader(path))
                 {
